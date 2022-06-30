@@ -2,15 +2,18 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttericon/font_awesome5_icons.dart';
+import 'package:fluttericon/font_awesome_icons.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:webapp_amrm/app/pages/home/home_controller.dart';
 import 'package:webapp_amrm/data/constants.dart';
 import 'package:webapp_amrm/app/widgets/CustomBottomNavigationBar.dart';
 import 'package:webapp_amrm/app/widgets/CustomButton.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
-
+  HomePage({Key? key}) : super(key: key);
+  final HomeController c = Get.put(HomeController());
   Widget percentWidget() {
     return Stack(
       alignment: Alignment.center,
@@ -104,13 +107,13 @@ class HomePage extends StatelessWidget {
                     IconButton(
                       onPressed: () {},
                       icon: Icon(
-                        Icons.blender_outlined,
+                        FontAwesome.bell,
                         color: ConstantColors.thirdFont,
                       ),
                     ),
                     IconButton(
                       onPressed: () {},
-                      icon: Icon(Icons.menu),
+                      icon: Icon(FontAwesome.menu),
                     ),
                   ],
                   flexibleSpace: FlexibleSpaceBar(
@@ -133,12 +136,14 @@ class HomePage extends StatelessWidget {
                           alignment: Alignment.centerLeft,
                           margin:
                               EdgeInsets.only(bottom: 10, left: 16, right: 16),
-                          child: Text(
-                            "Bienvenida, Shenna",
-                            style: Get.textTheme.headline5!.copyWith(
-                              color: ConstantColors.thirdFont,
-                            ),
-                          ),
+                          child: Obx(() {
+                            return Text(
+                              "Bienvenida, ${c.fullname.value}",
+                              style: Get.textTheme.headline5!.copyWith(
+                                color: ConstantColors.thirdFont,
+                              ),
+                            );
+                          }),
                         ),
                         Stack(
                           children: [

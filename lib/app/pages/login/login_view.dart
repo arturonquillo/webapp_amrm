@@ -23,7 +23,7 @@ class LoginPage extends StatelessWidget {
       ),
       child: Scaffold(
         body: Container(
-          color: ConstantColors.primaryColor,
+          color: ConstantColors.thirdFont,
           child: SafeArea(
             bottom: false,
             child: Container(

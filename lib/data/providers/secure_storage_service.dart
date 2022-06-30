@@ -1,7 +1,7 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class SecureStorage {
-  final _storage = new FlutterSecureStorage();
+  final _storage = const FlutterSecureStorage();
 
   static final SecureStorage secure = SecureStorage._();
   SecureStorage._();
@@ -9,8 +9,9 @@ class SecureStorage {
   Future<bool> hasData(String key) async {
     bool resp = false;
     // print(await _storage.read(key: key));
-    if (await _storage.read(key: key) != null)
+    if (await _storage.read(key: key) != null) {
       resp = (await _storage.read(key: key)).toString().trim() != "";
+    }
 
     return resp;
   }

@@ -11,6 +11,9 @@ class CustomInputTextField extends StatelessWidget {
   final Widget? suffixIcon;
   final bool obscureText;
   final Function(String value) onChanged;
+  final bool showError;
+  final bool autocorrect;
+  final String? error;
 
   const CustomInputTextField({
     Key? key,
@@ -22,6 +25,9 @@ class CustomInputTextField extends StatelessWidget {
     this.suffixIcon,
     this.obscureText = false,
     required this.onChanged,
+    this.error,
+    this.showError = false,
+    this.autocorrect = false,
   }) : super(key: key);
 
   @override
@@ -43,36 +49,35 @@ class CustomInputTextField extends StatelessWidget {
                 ),
               ),
             ),
-          SizedBox(
-            height: 42,
-            child: TextFormField(
-              textInputAction: textInputAction,
-              keyboardType: keyboardType,
-              obscureText: obscureText,
-              onChanged: onChanged,
-              decoration: InputDecoration(
-                suffixIcon: suffixIcon,
-                contentPadding: EdgeInsets.only(left: 14),
-                // label: label != null ? Text(label!) : null,
-                floatingLabelBehavior: FloatingLabelBehavior.always,
-                hintText: hintText,
-                focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(
-                      color: ConstantColors.primaryFont.withOpacity(0.3),
-                      width: 2,
-                    )),
-                enabledBorder: OutlineInputBorder(
+          TextFormField(
+            textInputAction: textInputAction,
+            keyboardType: keyboardType,
+            obscureText: obscureText,
+            onChanged: onChanged,
+            autocorrect: autocorrect,
+            decoration: InputDecoration(
+              suffixIcon: suffixIcon,
+              errorText: showError && error != "" ? error : null,
+              contentPadding: EdgeInsets.only(left: 14),
+              // label: label != null ? Text(label!) : null,
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+              hintText: hintText,
+              focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide(
-                    color: ConstantColors.primaryFont.withOpacity(0.15),
-                  ),
+                    color: ConstantColors.primaryFont.withOpacity(0.3),
+                    width: 2,
+                  )),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(
+                  color: ConstantColors.primaryFont.withOpacity(0.15),
                 ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(
-                    color: ConstantColors.primaryFont.withOpacity(0.15),
-                  ),
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(
+                  color: ConstantColors.primaryFont.withOpacity(0.15),
                 ),
               ),
             ),

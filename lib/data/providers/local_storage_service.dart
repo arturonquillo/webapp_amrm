@@ -14,7 +14,6 @@ class LocalStorage {
 
   void saveValue(String key, String value) async {
     storage.write(key, value);
-    // GetStorage().write(key, value);
   }
 
   void listen(void Function() callback) {

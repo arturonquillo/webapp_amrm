@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:webapp_amrm/app/routes.dart';
 
 import 'data/providers/matilda_api_provider.dart';
 
-void main() {
+void main() async {
   Get.put(MatildaApiProvider());
-  runApp(const MyApp());
+
+  await SentryFlutter.init(
+    (options) {
+      options.dsn =
+          'https://f38a0e71c781473c96da010fe23c0997@o1301381.ingest.sentry.io/6537844';
+      options.tracesSampleRate = 1.0;
+    },
+    appRunner: () => runApp(const MyApp()),
+  );
 }
 
 class MyApp extends StatelessWidget {

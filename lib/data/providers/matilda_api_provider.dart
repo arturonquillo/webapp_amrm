@@ -1,24 +1,26 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
-import 'local_storage_service.dart';
 import 'secure_storage_service.dart';
 
 class MatildaApiProvider extends GetConnect {
-  static String _baseUrl = "https://demo.treblle.com/api/v1/";
-  static String _user = "auth/";
+  static const String _baseUrl = "https://demo.treblle.com/api/v1/";
+  static const String _user = "auth/";
+  static const String _notas = "notas/";
 
   @override
   void onInit() {
     httpClient.baseUrl = _baseUrl;
     httpClient.timeout = const Duration(seconds: 30);
+
     httpClient.addRequestModifier<Object?>((request) async {
       String? token = await SecureStorage.secure.readValue("token");
       request.headers['Authorization'] = "Bearer $token";
       return request;
     });
+
     super.onInit();
   }
 
@@ -32,48 +34,44 @@ class MatildaApiProvider extends GetConnect {
             "accept": "application/json"
           });
       responseMap = _response(response);
-      print(email);
-      print(password);
-      print(_user + "/login");
-
-      // if (response.statusCode == 200) {
-      //   String token = responseMap["data"]['token'];
-      //   await SecureStorage.secure.saveValue("token", token);
-      // }
 
       return responseMap;
-    } catch (e) {
-      print(e);
+    } catch (error, stackTrace) {
+      await Sentry.captureException(
+        error,
+        stackTrace: stackTrace,
+      );
       return responseMap;
     }
   }
 
-  // Future<Map> changePassword(String currentPassword, String newPassword) async {
-  //   Map responseMap = {};
-  //   String? email = LocalStorage.local.readValue("user_email");
+  Future<Map> register(
+      String name, String email, String password, String phoneNumber) async {
+    Map responseMap = {};
+    try {
+      var response = await post(
+          _user + "register",
+          json.encode({
+            'name': name,
+            'email': email,
+            'password': password,
+            'phone_number': phoneNumber
+          }),
+          headers: {
+            "content-type": "application/json",
+            "accept": "application/json"
+          });
+      responseMap = _response(response);
 
-  //   try {
-  //     var response = await put(
-  //         _cuentasPath,
-  //         json.encode({
-  //           "email": email,
-  //           "contrasenaActual": currentPassword,
-  //           "contrasenaNueva": newPassword
-  //         }),
-  //         headers: {
-  //           "Content-Type": "application/json-patch+json",
-  //           "accept": "application/json"
-  //         });
-  //     responseMap = _response(response);
-
-  //     if (response.statusCode == 200) {}
-
-  //     return responseMap;
-  //   } catch (e) {
-  //     print(e);
-  //     return responseMap;
-  //   }
-  // }
+      return responseMap;
+    } catch (error, stackTrace) {
+      await Sentry.captureException(
+        error,
+        stackTrace: stackTrace,
+      );
+      return responseMap;
+    }
+  }
 
   Map _response(Response response) {
     Map r = response.body;

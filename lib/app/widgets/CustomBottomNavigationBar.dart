@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttericon/elusive_icons.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
-import 'package:fluttericon/font_awesome_icons.dart';
-import 'package:fluttericon/maki_icons.dart';
-import 'package:fluttericon/typicons_icons.dart';
 import 'package:webapp_amrm/data/constants.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
